@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Movie Recommender</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        /* Add custom styles here */
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-6">
+                <h1>Random Movie Recommender</h1>
+                <button id="randomButton" class="btn btn-primary mb-3">Random Movie</button>
+                <div id="movieDisplay" class="card" style="display: none;">
+                    <img id="movieImage" class="card-img-top" alt="Movie Poster">
+                    <div class="card-body">
+                        <h5 id="movieTitle" class="card-title"></h5>
+                        <p id="movieExplanation" class="card-text"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <h2>Choose a Movie</h2>
+                <select id="movieDropdown" class="form-select mb-3">
+                    <!-- Movie options will be dynamically populated here -->
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS (Bundle containing Popper.js) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JavaScript -->
+    <script>
+        let favoriteMoviesArray = [
+            {
+                movieTitle : "Spiderman",
+                explanation : "I have rewatched this movie over 20 times by now and am always entertained",
+                urlLink : "https://m.media-amazon.com/images/I/71oASSfGg0L._AC_UF894,1000_QL80_.jpg"
+            },
+            {
+                movieTitle : "Shrek 2",
+                explanation : "Best sequel ever",
+                urlLink : "https://m.media-amazon.com/images/M/MV5BMDJhMGRjN2QtNDUxYy00NGM3LThjNGQtMmZiZTRhNjM4YzUxL2ltYWdlL2ltYWdlXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_.jpg"
+            },
+            {
+                movieTitle : "Megamind",
+                explanation : "Underrated gem",
+                urlLink : "https://upload.wikimedia.org/wikipedia/en/8/89/Megamind2010Poster.jpg"
+            }
+        ];
+
+        // Function to populate dropdown with movie titles
+        function populateDropdown() {
+            let dropdown = document.getElementById("movieDropdown");
+            favoriteMoviesArray.forEach(movie => {
+                let option = document.createElement("option");
+                option.text = movie.movieTitle;
+                option.value = movie.urlLink; // Set value to image URL
+                dropdown.add(option);
+            });
+        }
+
+        // Function to display selected movie from dropdown
+        function displaySelectedMovie() {
+            let selectedOption = document.getElementById("movieDropdown").value;
+            let selectedMovie = favoriteMoviesArray.find(movie => movie.urlLink === selectedOption);
+            if (selectedMovie) {
+                document.getElementById("movieImage").src = selectedMovie.urlLink;
+                document.getElementById("movieTitle").textContent = selectedMovie.movieTitle;
+                document.getElementById("movieExplanation").textContent = selectedMovie.explanation;
+                document.getElementById("movieDisplay").style.display = "block";
+            }
+        }
+
+        // Event listener for random button click
+        document.getElementById("randomButton").addEventListener("click", () => {
+            let randomNumber = Math.floor(Math.random() * favoriteMoviesArray.length);
+            let randomMovie = favoriteMoviesArray[randomNumber];
+            document.getElementById("movieImage").src = randomMovie.urlLink;
+            document.getElementById("movieTitle").textContent = randomMovie.movieTitle;
+            document.getElementById("movieExplanation").textContent = randomMovie.explanation;
+            document.getElementById("movieDisplay").style.display = "block";
+        });
+
+        // Call the functions to populate dropdown and set event listener
+        populateDropdown();
+        document.getElementById("movieDropdown").addEventListener("change", displaySelectedMovie);
+    </script>
+</body>
+</html>
